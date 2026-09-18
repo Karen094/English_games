@@ -4,6 +4,8 @@
   "private": true,
   "description": "Mobile-friendly fill-in-the-blanks song quiz for ESL students. Pure static site — zero dependencies, no build step.",
   "scripts": {
-    "dev": "node serve.js"
+    "dev": "node serve.js",
+    "push": "git add -A && (git diff --cached --quiet || git commit -m \"Update quiz\") && git push",
+    "sync": "git pull --rebase && npm run push"
   }
 }

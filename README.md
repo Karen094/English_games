@@ -151,6 +151,27 @@ you only want students to do one song.
 3. GitHub Pages refreshes within about a minute; students just refresh their
    browser. No other file ever needs to change.
 
+### Updating from your computer (recommended — one command)
+
+Your local `English_quizzes` folder is a git clone of the repository, so
+after any change (e.g. adding a song in `songs.js`) just run:
+
+```bash
+npm run push
+```
+
+It stages your changes, commits them and pushes to GitHub — the live site
+then refreshes within about a minute. If you *also* edited the repository on
+the web in the meantime, run this instead so the web changes are pulled
+first:
+
+```bash
+npm run sync
+```
+
+Under the hood, `npm run push` is simply:
+`git add -A && git commit -m "Update quiz" && git push`.
+
 ## 5. Trying it on your own computer (optional)
 
 **Option A — dev server (recommended):**

@@ -1,0 +1,5 @@
+# IDE / editor metadata — never push these
+.idea/
+.vscode/
+node_modules/
+.DS_Store
