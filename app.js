@@ -309,7 +309,7 @@
           if (!target) target = blanks[0];
         }
         target.value = word;
-        target.focus();
+        // Deliberately no focus() here: tapping a word must not pop the keyboard.
         updateProgress();
         if (quizState.checked) {
           gradeInput(target);
@@ -395,6 +395,9 @@
 
   /* ---------------- fixed bottom stack helpers ---------------- */
 
+  // How many px the fixed stack is lifted right now (the phone keyboard).
+  var kbOffset = 0;
+
   // Keep the lyrics clear of the fixed word bank + action bar.
   function updateStackPadding() {
     var stack = document.getElementById("bottomStack");
@@ -406,13 +409,29 @@
     }
   }
 
+  // On phones the soft keyboard covers the bottom of the screen. While it is
+  // open, lift the fixed stack above it so the word bank stays tappable.
+  function adjustStackForKeyboard() {
+    var vv = window.visualViewport;
+    if (!vv || typeof vv.addEventListener !== "function") return;
+    var adjust = function () {
+      var stack = document.getElementById("bottomStack");
+      if (!stack) return;
+      var hidden = (window.innerHeight || 0) - vv.height - vv.offsetTop;
+      kbOffset = hidden > 0 ? hidden : 0;
+      stack.style.bottom = kbOffset > 0 ? kbOffset + "px" : "0px";
+    };
+    vv.addEventListener("resize", adjust);
+    vv.addEventListener("scroll", adjust);
+  }
+
   // If a chip fills a gap that is currently out of view, bring it into view.
   function revealIfHidden(input) {
     try {
       var rect = input.getBoundingClientRect();
       var stack = document.getElementById("bottomStack");
       var chrome = stack && typeof stack.offsetHeight === "number" ? stack.offsetHeight : 80;
-      var bottomSafe = (window.innerHeight || 800) - chrome;
+      var bottomSafe = (window.innerHeight || 800) - kbOffset - chrome;
       if (rect.top < 0 || rect.bottom > bottomSafe) {
         input.scrollIntoView({ behavior: "smooth", block: "center" });
       }
@@ -432,6 +451,7 @@
 
   function init() {
     window.addEventListener("resize", updateStackPadding);
+    adjustStackForKeyboard();
     // Direct link support: ?song=<id> opens that song straight away.
     var search = (typeof window.location !== "undefined" && window.location && window.location.search) || "";
     var match = /[?&]song=([^&]+)/.exec(search);
