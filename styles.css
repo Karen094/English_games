@@ -1,0 +1,230 @@
+/* ============================================================
+   English Song Quiz — styles (mobile-first)
+   To change colours, edit the :root block at the top.
+   ============================================================ */
+
+:root {
+  --bg: #f4f5fb;
+  --card: #ffffff;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --accent: #4f46e5;
+  --accent-dark: #4338ca;
+  --accent-soft: #eef2ff;
+  --accent-line: #a5b4fc;
+  --correct-bg: #dcfce7;
+  --correct-line: #22c55e;
+  --correct-text: #166534;
+  --incorrect-bg: #fee2e2;
+  --incorrect-line: #ef4444;
+  --incorrect-text: #b91c1c;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px calc(90px + env(safe-area-inset-bottom));
+}
+
+.hidden { display: none !important; }
+
+/* ---------------- home screen ---------------- */
+
+.screen-header { text-align: center; padding: 20px 0 12px; }
+.app-title { margin: 0 0 4px; font-size: 28px; }
+.subtitle { margin: 0; color: var(--muted); }
+
+.empty { text-align: center; color: var(--muted); padding: 40px 0; }
+
+.song-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.song-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: none;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.song-card:active { transform: scale(0.99); background: #fafaff; }
+
+.card-title { margin: 0 0 2px; font-size: 19px; }
+.card-artist { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+
+.card-meta, .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.badge {
+  display: inline-block;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.badge.best { background: #fef9c3; color: #a16207; }
+
+/* ---------------- quiz screen ---------------- */
+
+.topbar { margin-bottom: 8px; }
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.song-header { margin-bottom: 12px; }
+.song-title { margin: 0 0 2px; font-size: 24px; }
+.song-artist { margin: 0 0 8px; color: var(--muted); }
+
+.score-banner {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 12px;
+  animation: fadein 0.25s ease;
+}
+.score-banner.good { background: var(--correct-bg); color: var(--correct-text); }
+.score-banner.ok { background: #fef3c7; color: #92400e; }
+@keyframes fadein { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; } }
+
+.lyrics {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+.line { margin: 0 0 16px; }
+.line:last-child { margin-bottom: 0; }
+
+.blank-wrap { display: inline-block; }
+
+.blank {
+  font: inherit;
+  font-size: 20px; /* ≥16px stops iOS from zooming on focus */
+  padding: 4px 6px;
+  margin: 0 2px;
+  text-align: center;
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1.5px dashed var(--accent-line);
+  border-radius: 8px;
+  outline: none;
+}
+.blank::placeholder { color: var(--accent-line); }
+.blank:focus { border-style: solid; border-color: var(--accent); background: #fff; }
+.blank.correct {
+  background: var(--correct-bg);
+  border: 1.5px solid var(--correct-line);
+}
+.blank.incorrect {
+  background: var(--incorrect-bg);
+  border: 1.5px solid var(--incorrect-line);
+}
+
+/* the correct word, shown under a wrong answer */
+.hint { display: none; }
+.blank.incorrect + .hint {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--incorrect-text);
+}
+
+/* ---------------- word bank ---------------- */
+
+.word-bank {
+  margin-top: 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+.word-bank-title { margin: 0 0 10px; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  cursor: pointer;
+}
+.chip:active { background: var(--accent-soft); }
+
+/* ---------------- bottom bar ---------------- */
+
+.bottom-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid #e5e7eb;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+@media (min-width: 700px) {
+  .bottom-bar {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 640px;
+  }
+}
+
+.progress { color: var(--muted); font-size: 14px; font-weight: 600; margin-right: auto; }
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+.btn.primary { background: var(--accent); color: #fff; }
+.btn.primary:active { background: var(--accent-dark); }
+.btn.ghost { background: #eef0f4; color: var(--text); }
+.btn.ghost:active { background: #e3e6ec; }

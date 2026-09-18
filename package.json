@@ -1,0 +1,9 @@
+{
+  "name": "english-song-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mobile-friendly fill-in-the-blanks song quiz for ESL students. Pure static site — zero dependencies, no build step.",
+  "scripts": {
+    "dev": "node serve.js"
+  }
+}
