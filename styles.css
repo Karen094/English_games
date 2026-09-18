@@ -167,17 +167,58 @@ body {
   color: var(--incorrect-text);
 }
 
-/* ---------------- word bank ---------------- */
+/* ---------------- bottom stack: fixed word bank + action bar ---------------- */
+
+.bottom-stack {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+@media (min-width: 700px) {
+  .bottom-stack {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 640px;
+  }
+}
 
 .word-bank {
-  margin-top: 14px;
   background: var(--card);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  box-shadow: var(--shadow);
+  border-top: 1px solid #e5e7eb;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -2px 10px rgba(16, 24, 40, 0.08);
 }
-.word-bank-title { margin: 0 0 10px; font-size: 15px; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.bank-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bank-title { margin: 0; font-size: 14px; color: var(--muted); }
+.bank-toggle {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+  cursor: pointer;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 12px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+.word-bank.collapsed .chips { display: none; }
+
 .chip {
   font: inherit;
   font-size: 15px;
@@ -191,11 +232,9 @@ body {
 }
 .chip:active { background: var(--accent-soft); }
 
-/* ---------------- bottom bar ---------------- */
+/* ---------------- bottom bar (inside the fixed stack) ---------------- */
 
 .bottom-bar {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -204,13 +243,6 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-@media (min-width: 700px) {
-  .bottom-bar {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 640px;
-  }
 }
 
 .progress { color: var(--muted); font-size: 14px; font-weight: 600; margin-right: auto; }

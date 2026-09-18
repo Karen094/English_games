@@ -119,6 +119,7 @@
     window.scrollTo(0, 0);
     var app = appRoot();
     app.innerHTML = "";
+    app.style.paddingBottom = "";
 
     var header = el("header", "screen-header");
     header.appendChild(el("h1", "app-title", "🎵 Song Word Quiz"));
@@ -196,8 +197,10 @@
     });
     app.appendChild(lyrics);
 
+    var stack = el("div", "bottom-stack");
+    stack.id = "bottomStack";
     if (song.wordBank && song.totalBlanks > 0) {
-      app.appendChild(createWordBank(song));
+      stack.appendChild(createWordBank(song));
     }
 
     var bar = el("div", "bottom-bar");
@@ -210,9 +213,11 @@
     check.addEventListener("click", checkAnswers);
     bar.appendChild(reset);
     bar.appendChild(check);
-    app.appendChild(bar);
+    stack.appendChild(bar);
+    app.appendChild(stack);
 
     updateProgress();
+    updateStackPadding();
   }
 
   function createBlank(answer, index, total) {
@@ -254,8 +259,22 @@
   }
 
   function createWordBank(song) {
-    var section = el("section", "word-bank");
-    section.appendChild(el("h2", "word-bank-title", "Word bank — tap a word to fill a gap"));
+    var panel = el("section", "word-bank");
+
+    var head = el("div", "bank-head");
+    head.appendChild(el("h2", "bank-title", "Word bank — tap a word to fill a gap"));
+    var toggle = el("button", "bank-toggle", "▾");
+    head.appendChild(toggle);
+    panel.appendChild(head);
+
+    var chips = el("div", "chips");
+    panel.appendChild(chips);
+
+    head.addEventListener("click", function () {
+      var collapsed = panel.classList.toggle("collapsed");
+      toggle.textContent = collapsed ? "▴" : "▾";
+      updateStackPadding();
+    });
 
     var seen = {};
     var words = [];
@@ -271,7 +290,6 @@
       });
     });
 
-    var chips = el("div", "chips");
     shuffle(words).forEach(function (word) {
       var chip = el("button", "chip", word);
       chip.addEventListener("click", function () {
@@ -297,11 +315,12 @@
           gradeInput(target);
           refreshBanner();
         }
+        revealIfHidden(target);
       });
       chips.appendChild(chip);
     });
-    section.appendChild(chips);
-    return section;
+
+    return panel;
   }
 
   /* ---------------- checking & scoring ---------------- */
@@ -374,6 +393,34 @@
     progress.textContent = filled + " / " + blanks.length + " filled";
   }
 
+  /* ---------------- fixed bottom stack helpers ---------------- */
+
+  // Keep the lyrics clear of the fixed word bank + action bar.
+  function updateStackPadding() {
+    var stack = document.getElementById("bottomStack");
+    if (!stack) return;
+    var app = appRoot();
+    var h = stack.offsetHeight;
+    if (typeof h === "number") {
+      app.style.paddingBottom = (h + 12) + "px";
+    }
+  }
+
+  // If a chip fills a gap that is currently out of view, bring it into view.
+  function revealIfHidden(input) {
+    try {
+      var rect = input.getBoundingClientRect();
+      var stack = document.getElementById("bottomStack");
+      var chrome = stack && typeof stack.offsetHeight === "number" ? stack.offsetHeight : 80;
+      var bottomSafe = (window.innerHeight || 800) - chrome;
+      if (rect.top < 0 || rect.bottom > bottomSafe) {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch (e) {
+      /* very old browser — ignore */
+    }
+  }
+
   /* ---------------- init ---------------- */
 
   // Exposed only for automated tests; harmless in the browser.
@@ -384,6 +431,7 @@
   };
 
   function init() {
+    window.addEventListener("resize", updateStackPadding);
     // Direct link support: ?song=<id> opens that song straight away.
     var search = (typeof window.location !== "undefined" && window.location && window.location.search) || "";
     var match = /[?&]song=([^&]+)/.exec(search);

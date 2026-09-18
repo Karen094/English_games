@@ -19,9 +19,11 @@ phones, type (or tap) the missing words into the gaps, and check their answers.
 2. **The quiz** — the song text with dashed boxes where words are missing.
    - Tap a box → type the word with the phone keyboard.
    - Press **Enter** to jump to the next box.
-   - Songs with a **word bank** (set `wordBank: true`) show the missing words
-     as tappable pills below the lyrics — tapping a pill fills the active box,
-     so weaker students don't have to spell everything themselves.
+   - Songs with a **word bank** (set `wordBank: true`) pin the missing words
+     as tappable pills to the **bottom of the screen** — they stay visible
+     while you scroll the lyrics (tap the panel's header to hide or show it).
+     Tapping a pill fills the active box, so weaker students don't have to
+     spell everything themselves.
 3. **Check answers** — correct words turn **green**, wrong ones turn **red**
    and the correct word is printed underneath. A score banner appears at the
    top (🎉 *Perfect!* when everything is right). The student can fix mistakes
