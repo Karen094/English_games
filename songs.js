@@ -21,42 +21,6 @@
    ============================================================ */
 
 window.SONGS = [
-  {
-    id: "twinkle-twinkle-little-star",
-    title: "Twinkle, Twinkle, Little Star",
-    artist: "Traditional",
-    level: "A1",
-    wordBank: true,
-    lines: [
-      "[Twinkle], [twinkle], little [star],",
-      "How I [wonder] what you [are].",
-      "Up [above] the [world] so [high],",
-      "Like a [diamond] in the [sky].",
-      "Twinkle, twinkle, little star,",
-      "How I [wonder] what you [are].",
-      "When the [blazing] sun is [gone],",
-      "When he nothing shines upon,",
-      "Then you show your little [light],",
-      "[Twinkle], [twinkle] through the [night]."
-    ]
-  },
-
-  {
-    id: "mary-had-a-little-lamb",
-    title: "Mary Had a Little Lamb",
-    artist: "Traditional",
-    level: "A1",
-    wordBank: false,
-    lines: [
-      "[Mary] had a little [lamb],",
-      "Little [lamb], little lamb,",
-      "Mary had a little [lamb],",
-      "Whose [fleece] was white as [snow].",
-      "And [everywhere] that Mary [went],",
-      "The [lamb] was sure to [go]"
-    ]
-  },
-
     {
       id: "Somewhere over the rainbow",
       title: "Somewhere over the rainbow",
