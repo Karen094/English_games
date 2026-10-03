@@ -89,5 +89,40 @@ window.SONGS = [
         "And the dream that you dare to",
         "Why, oh why can't I? I"
       ]
-    }
+    },
+  {
+    id: "Traveling Man",
+    title: "Traveling Man",
+    artist: "Zach Bryan",
+    level: "B1",
+    wordBank: true,
+    lines: [
+      "I'm just a [traveling] man, you see",
+      "Wherever this [road] goes is where I will be",
+      "And I'll catch me a ride on a boat to [Spain]",
+      "Tell a woman that I love her, then forget her name",
+      "And I wish I could stay for midday [coffee]",
+      "But I just can't get this dreamin' off me",
+      "If I could find me a place to rest my [mind]",
+      "But Mama always said you'll get there in good time",
+      "There's some [headlights] burning down the highway",
+      "And I think that I may just [hitch] me a ride",
+      "'Cause I'm a traveling man by [trade], sir",
+      "We're all runnin' from the things inside",
+      "There's a [train] headin' west to south Toledo",
+      "And if the dogs don't sell me, [asleep] I'll go",
+      "Dreamin' as I'm steamin' past [miles] of ground",
+      "Through the souls and hymnals that built these [towns]",
+      "Won't stay too long and leave too soon",
+      "The best time for goin' is when the goin' scares you",
+      "There's some headlights burning down the highway",
+      "And I think that I may just hitch me a ride",
+      "'Cause I'm a traveling man by trade, sir",
+      "We're all runnin' from the things inside",
+      "There's some headlights burnin' down the [highway]",
+      "And I think that I may just hitch me a ride",
+      "'Cause I'm a traveling man by trade, sir",
+      "We're all running from the things inside"
+    ]
+  }
 ];
