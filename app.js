@@ -240,6 +240,7 @@
 
     input.addEventListener("input", function () {
       updateProgress();
+      updateWordBank();
       if (quizState.checked) {
         gradeInput(input);
         refreshBanner();
@@ -276,23 +277,30 @@
       updateStackPadding();
     });
 
-    var seen = {};
+    // One pill per distinct answer word. A word may occur several times in
+    // the song, so a pill only disappears when ALL of its occurrences are
+    // already in the lyrics; it comes back if a word is erased, and Reset
+    // brings every pill back.
+    var totals = {};
     var words = [];
     song.lines.forEach(function (segments) {
       segments.forEach(function (seg) {
         if (seg.type === "blank") {
-          var key = seg.answer.toLowerCase();
-          if (!seen[key]) {
-            seen[key] = true;
-            words.push(seg.answer);
+          var key = normalize(seg.answer);
+          if (!totals[key]) {
+            totals[key] = 0;
+            words.push({ word: seg.answer, key: key });
           }
+          totals[key]++;
         }
       });
     });
 
-    shuffle(words).forEach(function (word) {
-      var chip = el("button", "chip", word);
+    shuffle(words).forEach(function (entry) {
+      var chip = el("button", "chip", entry.word);
+      chip.dataset.key = entry.key;
       chip.addEventListener("click", function () {
+        if (chip.style.display === "none") return;
         var blanks = allBlanks();
         if (blanks.length === 0) return;
         var target = null;
@@ -308,9 +316,10 @@
           }
           if (!target) target = blanks[0];
         }
-        target.value = word;
+        target.value = entry.word;
         // Deliberately no focus() here: tapping a word must not pop the keyboard.
         updateProgress();
+        updateWordBank();
         if (quizState.checked) {
           gradeInput(target);
           refreshBanner();
@@ -319,6 +328,9 @@
       });
       chips.appendChild(chip);
     });
+
+    var placedMsg = el("p", "placed-msg hidden", "All words placed - tap 'Check answers'!");
+    chips.appendChild(placedMsg);
 
     return panel;
   }
@@ -381,6 +393,7 @@
     var banner = document.getElementById("scoreBanner");
     if (banner) banner.classList.add("hidden");
     updateProgress();
+    updateWordBank();
   }
 
   function updateProgress() {
@@ -391,6 +404,44 @@
       return i.value.trim() !== "";
     }).length;
     progress.textContent = filled + " / " + blanks.length + " filled";
+  }
+
+  // Keep the word bank in step with the lyrics: a pill is hidden while every
+  // occurrence of its word is already in a gap, and reappears as soon as a
+  // word is erased. Reset (all gaps empty) brings every pill back.
+  function updateWordBank() {
+    var panel = document.querySelector(".word-bank");
+    if (!panel) return;
+    var song = PARSED[quizState.songIndex];
+    var totals = {};
+    song.lines.forEach(function (segments) {
+      segments.forEach(function (seg) {
+        if (seg.type === "blank") {
+          var key = normalize(seg.answer);
+          totals[key] = (totals[key] || 0) + 1;
+        }
+      });
+    });
+    var blanks = allBlanks();
+    var used = {};
+    var allFilled = blanks.length > 0;
+    blanks.forEach(function (b) {
+      var v = normalize(b.value);
+      if (v) used[v] = (used[v] || 0) + 1;
+      if (b.value.trim() === "") allFilled = false;
+    });
+    var chipEls = panel.querySelectorAll(".chip");
+    var visible = 0;
+    for (var i = 0; i < chipEls.length; i++) {
+      var chip = chipEls[i];
+      var remaining = (totals[chip.dataset.key] || 0) - (used[chip.dataset.key] || 0);
+      var show = remaining > 0;
+      chip.style.display = show ? "" : "none";
+      chip.disabled = !show;
+      if (show) visible++;
+    }
+    var msg = panel.querySelector(".placed-msg");
+    if (msg) msg.classList.toggle("hidden", !(visible === 0 && allFilled));
   }
 
   /* ---------------- fixed bottom stack helpers ---------------- */

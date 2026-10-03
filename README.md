@@ -25,6 +25,10 @@ phones, type (or tap) the missing words into the gaps, and check their answers.
      panel lifts itself above the keyboard). Tap the panel's header to hide
      or show it. Tapping a pill fills a box without opening the keyboard, so
      weaker students don't have to spell everything themselves.
+     Placed words **disappear from the bank** — and come back if the student
+     erases the word or presses **Reset**. (Words that occur several times in
+     a song stay in the bank until every one of them is placed.) When the
+     whole song is filled, the bank shows "All words placed".
 3. **Check answers** — correct words turn **green**, wrong ones turn **red**
    and the correct word is printed underneath. A score banner appears at the
    top (🎉 *Perfect!* when everything is right). The student can fix mistakes
@@ -57,8 +61,12 @@ inside square brackets `[...]` and turns each one into a dashed input box
 (ordinary words are shown as normal text). When the student presses
 *Check answers*, the app compares what they typed with the bracketed word —
 ignoring upper/lower case, extra spaces and accents — and colours the box
-green or red. The best score per song is kept in the phone's own storage
-(`localStorage`), so it reappears the next time the same phone opens the site.
+green or red. In songs with a word bank, each missing word is a tappable
+pill; the app keeps the bank in step with the lyrics — a pill is hidden
+while every occurrence of its word is already in a gap and reappears when
+the word is erased, so **Reset** always restores the full bank. The best
+score per song is kept in the phone's own storage (`localStorage`), so it
+reappears the next time the same phone opens the site.
 
 ## 3. Adding a song (the only editing you will ever do)
 

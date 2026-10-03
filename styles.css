@@ -232,6 +232,15 @@ body {
 }
 .chip:active { background: var(--accent-soft); }
 
+.placed-msg {
+  width: 100%;
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--correct-text);
+}
+
 /* ---------------- bottom bar (inside the fixed stack) ---------------- */
 
 .bottom-bar {
